@@ -9,15 +9,22 @@ const store = new Vuex.Store({
         isLogin: cookie.get('isLogin')
     },
     getters: {
+        userInfo: state => state.userInfo,
         isLogin: state => state.isLogin
     },
     mutations: {
+        setUserInfo(state, data) {
+            state.userInfo = data;
+        },
         setLoginState(state, data) {
             state.isLogin = data;
             cookie.set('isLogin', data);
         }
     },
     actions: {
+        setUserInfo({ commit }, data) {
+            commit('setUserInfo', data);
+        },
         setLoginState({ commit }, data) {
             commit('setLoginState', data);
         }

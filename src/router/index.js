@@ -18,10 +18,14 @@ export default new Router({
       },
       component: resolve => require(['@/components/Home'], resolve),
       children: [
-        {path: "",
-        component: () => import('@/components/menu/Blank')
-      }
-
+        {
+          path: "",
+          component: () => import('@/components/menu/Blank')
+        },
+        {
+          path: "profile",
+          component: () => import('@/components/menu/Profile')
+        }
       ]
     }
   ]

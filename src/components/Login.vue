@@ -51,7 +51,15 @@
 export default {
   methods: {
     doLogin() {
+      // 这里是模拟数据
+      let userInfo = {
+        name: "SongYing",
+        avatar: "https://mojipanda.com/img/author.jpg",
+        description: "去吧，皮卡丘～",
+        subDescription: ".oOo.oOo."
+      };
       this.$store.dispatch("setLoginState", true);
+      this.$store.dispatch("setUserInfo", userInfo);
       this.$router.push({ path: "/" });
     }
   }

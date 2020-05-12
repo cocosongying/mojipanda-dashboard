@@ -6,14 +6,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="https://mojipanda.com/img/author.jpg" class="img-circle" alt="User Image" />
+          <img :src="userInfo.avatar" class="img-circle" />
         </div>
         <div class="pull-left info">
-          <p>SongYing</p>
-          <!-- Status -->
-          <a href="#">
-            <i class="fa fa-circle text-success"></i> 在线
-          </a>
+          <p>{{ userInfo.name }}</p>
         </div>
       </div>
 
@@ -50,8 +46,9 @@
 <script>
 export default {
   data() {
+    let userInfo = this.$store.getters.userInfo;
     return {
-      status: "Online",
+      userInfo,
       rows: [{
         id: 1,
         name: "Home",

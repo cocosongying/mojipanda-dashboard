@@ -2,21 +2,7 @@
   <!-- Content Wrapper. Contains page content -->
   <div id="content_wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Page Header
-        <small>Optional description</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li>
-          <a href="#">
-            <i class="fa fa-dashboard"></i> Level
-          </a>
-        </li>
-        <li class="active">Here</li>
-      </ol>
-    </section>
-
+    <ContentHeader :headerInfo="headerInfo" />
     <!-- Main content -->
     <section class="content container-fluid">
       <!--------------------------
@@ -27,3 +13,23 @@
   </div>
   <!-- /.content-wrapper -->
 </template>
+
+<script>
+import ContentHeader from "@/components/base/ContentHeader.vue";
+export default {
+  data() {
+    let headerInfo = {
+      title: "Page Header",
+      subtitle: "Optional description",
+      level: [],
+      url: []
+    };
+    return {
+      headerInfo
+    };
+  },
+  components: {
+    ContentHeader
+  }
+};
+</script>
