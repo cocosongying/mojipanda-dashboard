@@ -49,6 +49,10 @@
 
 <script>
 export default {
+  created() {
+    this.$store.dispatch("setLoginState", "");
+    this.$store.dispatch("setUserInfo", {});
+  },
   methods: {
     doLogin() {
       // 这里是模拟数据

@@ -11,15 +11,9 @@
           <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-              <img
-                class="profile-user-img img-responsive img-circle"
-                src="https://mojipanda.com/img/author.jpg"
-              />
-
+              <img class="profile-user-img img-responsive img-circle" :src="userInfo.avatar" />
               <h3 class="profile-username text-center">{{ userInfo.name }}</h3>
-
               <p class="text-muted text-center">Software Engineer</p>
-
               <a href="#" class="btn btn-block bg-red">
                 <b>好运</b>
               </a>
@@ -38,7 +32,6 @@
               <strong>
                 <i class="fa fa-pencil margin-r-5"></i> 技能
               </strong>
-
               <p>
                 <button class="label bg-navy">Coding</button>
                 <button class="label label-info">Javascript</button>
@@ -50,7 +43,6 @@
               <strong>
                 <i class="fa fa-file-text-o margin-r-5"></i> 备注
               </strong>
-
               <p>备注信息</p>
             </div>
             <!-- /.box-body -->

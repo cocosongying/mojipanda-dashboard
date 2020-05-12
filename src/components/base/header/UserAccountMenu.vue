@@ -4,14 +4,14 @@
     <!-- Menu Toggle Button -->
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
       <!-- The user image in the navbar-->
-      <img src="https://mojipanda.com/img/author.jpg" class="user-image" alt="User Image" />
+      <img :src="userInfo.avatar" class="user-image" alt="User Image" />
       <!-- hidden-xs hides the username on small devices so only the image appears. -->
       <span class="hidden-xs" v-cloak>{{ userInfo.name }}</span>
     </a>
     <ul class="dropdown-menu">
       <!-- The user image in the menu -->
       <li class="user-header">
-        <img src="https://mojipanda.com/img/author.jpg" class="img-circle" alt="User Image" />
+        <img :src="userInfo.avatar" class="img-circle" alt="User Image" />
         <p>
           {{ userInfo.description }}
           <small>{{ userInfo.subDescription }}</small>
@@ -43,6 +43,7 @@ export default {
     doLogout() {
       this.$store.dispatch("setLoginState", "");
       this.$store.dispatch("setUserInfo", {});
+      localStorage.removeItem("store");
       this.$router.push({ path: "/login" });
     }
   }

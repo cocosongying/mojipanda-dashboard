@@ -9,24 +9,10 @@ export default new Router({
   routes: [
     {
       path: '/login',
-      component: resolve => require(['@/components/Login'], resolve)
-    },
-    {
-      path: '/',
       meta: {
-        auth: true,
+        normal: true
       },
-      component: resolve => require(['@/components/Home'], resolve),
-      children: [
-        {
-          path: "",
-          component: () => import('@/components/menu/Blank')
-        },
-        {
-          path: "profile",
-          component: () => import('@/components/menu/Profile')
-        }
-      ]
+      component: resolve => require(['@/components/Login'], resolve)
     }
   ]
 })
