@@ -4,6 +4,7 @@ import VueAxios from 'vue-axios'
 import App from './App.vue'
 import router from './router';
 import store from './store';
+import consts from './consts'
 
 import 'admin-lte/bower_components/bootstrap/dist/css/bootstrap.min.css'
 import 'admin-lte/bower_components/font-awesome/css/font-awesome.min.css'
@@ -47,7 +48,7 @@ const genRoutes = function (menus, routes) {
 let fromApi = true;
 
 Vue.use(VueAxios, axios)
-
+Vue.prototype.Global = consts
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
