@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import cookie from 'vue-cookies';
+import getters from './getters';
+import mutations from './mutations';
+import actions from './actions';
 
 Vue.use(Vuex);
 const store = new Vuex.Store({
@@ -8,27 +11,9 @@ const store = new Vuex.Store({
         userInfo: {},
         isLogin: cookie.get('isLogin')
     },
-    getters: {
-        userInfo: state => state.userInfo,
-        isLogin: state => state.isLogin
-    },
-    mutations: {
-        setUserInfo(state, data) {
-            state.userInfo = data;
-        },
-        setLoginState(state, data) {
-            state.isLogin = data;
-            cookie.set('isLogin', data);
-        }
-    },
-    actions: {
-        setUserInfo({ commit }, data) {
-            commit('setUserInfo', data);
-        },
-        setLoginState({ commit }, data) {
-            commit('setLoginState', data);
-        }
-    }
+    getters: getters,
+    mutations: mutations,
+    actions: actions
 });
 
 export default store;
