@@ -68,7 +68,6 @@ export default {
       this.$store.dispatch("setUserInfo", userInfo);
       localStorage.setItem("store", JSON.stringify(this.$store.state));
       this.$router.push({ path: "/" });
-      location.reload();
     }
   }
 };
