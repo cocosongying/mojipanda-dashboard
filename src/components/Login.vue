@@ -60,11 +60,15 @@ export default {
         name: "SongYing",
         avatar: "https://mojipanda.com/img/author.jpg",
         description: "去吧，皮卡丘～",
-        subDescription: ".oOo.oOo."
+        subDescription: ".oOo.oOo.",
+        menu: '["1","1","01"]',
       };
+      console.log(this.Global.Api.BASE_URL);
       this.$store.dispatch("setLoginState", true);
       this.$store.dispatch("setUserInfo", userInfo);
+      localStorage.setItem("store", JSON.stringify(this.$store.state));
       this.$router.push({ path: "/" });
+      location.reload();
     }
   }
 };
