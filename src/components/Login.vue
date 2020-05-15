@@ -10,11 +10,11 @@
         <p class="login-box-msg">～来开启新世界的大门吧～</p>
         <form>
           <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="用户名" />
+            <input type="text" class="form-control" placeholder="用户名" v-model="username" />
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="通行证" />
+            <input type="password" class="form-control" placeholder="通行证" v-model="password" />
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
           <div class="row">
@@ -48,26 +48,37 @@
 </style>
 
 <script>
+import Login from '@/common/login'
 export default {
+  data() {
+    return {
+      username: "",
+      password: ""
+    };
+  },
   created() {
     this.$store.dispatch("setLoginState", "");
     this.$store.dispatch("setUserInfo", {});
   },
   methods: {
-    doLogin() {
-      // 这里是模拟数据
-      let userInfo = {
-        name: "SongYing",
-        avatar: "https://mojipanda.com/img/author.jpg",
-        description: "去吧，皮卡丘～",
-        subDescription: ".oOo.oOo.",
-        menu: '["1","1","01"]',
-      };
-      console.log(this.Global.Api.BASE_URL);
+    async doLogin() {
+      let res = await Login.doLogin(this.username, this.password);
+      let { code, data } = res;
+      if (code == 0) {
+        this.dealPass(data);
+      } else {
+        this.dealError(data);
+      }
+    },
+    dealPass(data) {
       this.$store.dispatch("setLoginState", true);
-      this.$store.dispatch("setUserInfo", userInfo);
+      this.$store.dispatch("setUserInfo", data.userInfo);
       localStorage.setItem("store", JSON.stringify(this.$store.state));
-      this.$router.push({ path: "/" });
+      window.open("/dashboard", "_self");
+    },
+    dealError() {
+      this.password = "";
+      this.$toastr.e("用户名或密码错误");
     }
   }
 };

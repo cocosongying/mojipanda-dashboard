@@ -6,7 +6,7 @@
       <!-- The user image in the navbar-->
       <img :src="userInfo.avatar" class="user-image" alt="User Image" />
       <!-- hidden-xs hides the username on small devices so only the image appears. -->
-      <span class="hidden-xs" v-cloak>{{ userInfo.name }}</span>
+      <span class="hidden-xs" v-cloak>{{ userInfo.nickname }}</span>
     </a>
     <ul class="dropdown-menu">
       <!-- The user image in the menu -->

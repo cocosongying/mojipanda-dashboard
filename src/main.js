@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueToastr from "vue-toastr";
 import App from './App.vue'
 import router from './router';
 import store from './store';
@@ -48,6 +49,7 @@ const genRoutes = function (menus, routes) {
 let fromApi = true;
 
 Vue.use(VueAxios, axios)
+Vue.use(VueToastr)
 Vue.prototype.Global = consts
 Vue.config.productionTip = false
 
@@ -63,7 +65,11 @@ router.beforeEach((to, from, next) => {
       }
     ];
     const routes = genRoutes(menus);
-    router.addRoutes([routes]);
+    const notfound = {
+      path: "*",
+      redirect: '/'
+    }
+    router.addRoutes([routes, notfound]);
     router.push({
       path: to.path
     });

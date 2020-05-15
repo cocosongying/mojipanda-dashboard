@@ -9,7 +9,7 @@
           <img :src="userInfo.avatar" class="img-circle" />
         </div>
         <div class="pull-left info">
-          <p>{{ userInfo.name }}</p>
+          <p>{{ userInfo.nickname }}</p>
         </div>
       </div>
 
