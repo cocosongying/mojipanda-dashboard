@@ -48,8 +48,8 @@
 </style>
 
 <script>
-import Login from "@/common/login";
-import CryptoUtil from "@/util/crypto";
+import Login from "../common/login";
+import CryptoUtil from "../util/crypto";
 export default {
   data() {
     return {

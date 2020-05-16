@@ -120,8 +120,8 @@
 
 <script>
 import ContentHeader from "@/components/base/ContentHeader.vue";
-import MenuApi from "@/common/menu";
-import UserApi from "@/common/user";
+import MenuApi from "../../common/menu";
+import UserApi from "../../common/user";
 export default {
   async created() {
     let params = {

@@ -125,7 +125,7 @@
 
 <script>
 import ContentHeader from "@/components/base/ContentHeader.vue";
-import MenuApi from "@/common/menu";
+import MenuApi from "../../common/menu";
 export default {
   data() {
     let userInfo = this.$store.getters.userInfo;
