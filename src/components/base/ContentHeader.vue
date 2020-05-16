@@ -14,7 +14,7 @@
       <li v-for="i in headerInfo.level.length - 1" :key="i">
         <a
           href="javascript:void(0);"
-          @click="toUrl(headerInfo.url[i - 1])"
+          @click="toUrl(headerInfo.path[i - 1])"
         >{{ headerInfo.level[i - 1] }}</a>
       </li>
       <li class="active">{{ headerInfo.level[headerInfo.level.length - 1] }}</li>
@@ -26,8 +26,8 @@
 export default {
   props: ["headerInfo"],
   methods: {
-    toUrl(url) {
-      this.$router.push({ path: url });
+    toUrl(path) {
+      this.$router.push({ path: path });
     }
   }
 };

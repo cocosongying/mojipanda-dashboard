@@ -1,11 +1,17 @@
 const Menu = {
-    // Keys: ['', ''],
+    UserList: 1,
+    Profile: 99,
     ALL: [
         {
             id: 1,
             name: '用户管理',
             url: 'userlist',
-            class: 'fa fa-user'
+            component: 'UserList',
+            class: 'fa fa-user',
+            title: '用户管理',
+            subtitle: '',
+            level: ["用户管理"],
+            path: [""],
         },
         {
             id: 2,
@@ -33,6 +39,15 @@ const Menu = {
                 },
             ]
         },
+        {
+            id: 99,
+            name: '基本信息',
+            title: '我的基本信息',
+            subtitle: '',
+            url: 'profile',
+            level: ["基本信息"],
+            path: [""],
+        }
     ]
 }
 

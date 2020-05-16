@@ -120,32 +120,24 @@
 
 <script>
 import ContentHeader from "@/components/base/ContentHeader.vue";
+import MenuApi from "@/common/menu";
+import UserApi from "@/common/user";
 export default {
-  created() {
-    this.axios
-      .post("http://localhost:2001/user/list", {})
-      .then(response => {
-        let { code, data } = response.data;
-        if (code == 0) {
-          this.rows = data.list;
-          this.total = data.total;
-          // this.dealPass(data);
-        } else {
-          this.rows = [];
-          // this.dealError(data);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  async created() {
+    let params = {
+      token: this.$store.getters.token
+    };
+    let res = await UserApi.list(params);
+    let { code, data } = res;
+    if (code == 0) {
+      this.rows = data.list;
+      this.total = data.total;
+    } else {
+      this.rows = [];
+    }
   },
   data() {
-    let headerInfo = {
-      title: "用户管理",
-      subtitle: "",
-      level: ["用户管理"],
-      url: [""]
-    };
+    let headerInfo = MenuApi.getMenuById(this.Global.Menu.UserList);
     let rows = [];
     let total = 0;
     let pageIndex = 0;
@@ -167,29 +159,23 @@ export default {
   },
   methods: {
     showInfo(id) {
-      // alert(id);
-      console.log(id);
       this.selectId = id;
       this.getById(id);
     },
-    getById(id) {
-      this.axios
-        .post("http://localhost:2001/user/getById", {
-          id: id
-        })
-        .then(response => {
-          let { code, data } = response.data;
-          if (code == 0) {
-            this.current = data.userInfo;
-            // this.dealPass(data);
-          } else {
-            this.current = {};
-            // this.dealError(data);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    async getById(id) {
+      let params = {
+        token: this.$store.getters.token,
+        id: id
+      };
+      let res = await UserApi.getById(params);
+      let { code, data } = res;
+      if (code == 0) {
+        this.current = data.userInfo;
+        // this.dealPass(data);
+      } else {
+        this.current = {};
+        // this.dealError(data);
+      }
     },
     toggleSelect() {
       this.selectAll = this.selectList.length == this.rows.length;

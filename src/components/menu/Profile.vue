@@ -125,15 +125,11 @@
 
 <script>
 import ContentHeader from "@/components/base/ContentHeader.vue";
+import MenuApi from "@/common/menu";
 export default {
   data() {
     let userInfo = this.$store.getters.userInfo;
-    let headerInfo = {
-      title: "基本信息",
-      subtitle: "",
-      level: ["基本信息"],
-      url: [""]
-    };
+    let headerInfo = MenuApi.getMenuById(this.Global.Profile);
     return {
       userInfo,
       headerInfo

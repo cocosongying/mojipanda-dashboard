@@ -21,7 +21,7 @@
             <div class="col-xs-8">
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" /> 记住我
+                  <input type="checkbox" v-model="rememberme" :value="true" /> 记住我
                 </label>
               </div>
             </div>
@@ -48,17 +48,25 @@
 </style>
 
 <script>
-import Login from '@/common/login'
+import Login from "@/common/login";
+import CryptoUtil from "@/util/crypto";
 export default {
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
+      rememberme: false
     };
   },
   created() {
     this.$store.dispatch("setLoginState", "");
     this.$store.dispatch("setUserInfo", {});
+    if (localStorage.getItem("loginInfo")) {
+      let info = JSON.parse(localStorage.getItem("loginInfo"));
+      this.username = info.username;
+      this.password = CryptoUtil.aesDecrypt(info.password);
+      this.rememberme = info.rememberme;
+    }
   },
   methods: {
     async doLogin() {
@@ -71,8 +79,19 @@ export default {
       }
     },
     dealPass(data) {
+      if (this.rememberme == true) {
+        let info = {
+          username: this.username,
+          password: CryptoUtil.aesEncrypt(this.password),
+          rememberme: true
+        };
+        localStorage.setItem("loginInfo", JSON.stringify(info));
+      } else {
+        localStorage.removeItem("loginInfo");
+      }
       this.$store.dispatch("setLoginState", true);
       this.$store.dispatch("setUserInfo", data.userInfo);
+      this.$store.dispatch("setToken", data.token);
       localStorage.setItem("store", JSON.stringify(this.$store.state));
       window.open("/dashboard", "_self");
     },

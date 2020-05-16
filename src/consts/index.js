@@ -1,5 +1,5 @@
-import Api from '@/consts/api'
-import Menu from '@/consts/menu'
+import Api from './api'
+import Menu from './menu'
 
 export default {
     Api,

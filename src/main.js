@@ -58,12 +58,30 @@ router.beforeEach((to, from, next) => {
     next();
   } else if (store.getters.isLogin && fromApi) {
     fromApi = false;
-    const menus = [
+    let menus = [
       {
         path: 'profile',
         component: 'Profile',
       }
     ];
+    if (localStorage.getItem("store")) {
+      try {
+        let storeInfo = JSON.parse(localStorage.getItem("store"));
+        let menu = JSON.parse(storeInfo.userInfo.menu);
+        for (let i = 0; i < menu.length && i < consts.Menu.ALL.length; i++) {
+          if (menu[i] === 1) {
+            let info = {
+              path: consts.Menu.ALL[i].url,
+              component: consts.Menu.ALL[i].component
+            }
+            menus.push(info);
+          }
+        }
+      } catch (error) {
+        //
+      }
+    }
+    console.log(menus);
     const routes = genRoutes(menus);
     const notfound = {
       path: "*",

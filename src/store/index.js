@@ -9,6 +9,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         userInfo: {},
+        token: "",
         isLogin: cookie.get('isLogin')
     },
     getters: getters,
