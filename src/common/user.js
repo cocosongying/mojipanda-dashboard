@@ -7,6 +7,11 @@ const User = {
         let res = await axios.post(url, params);
         return res.data;
     },
+    async add(params) {
+        let url = Consts.Api.BASE_URL + Consts.Api.USER_ADD;
+        let res = await axios.post(url, params);
+        return res.data;
+    },
     async getById(params) {
         let url = Consts.Api.BASE_URL + Consts.Api.USER_GETBY_ID;
         let res = await axios.post(url, params);
@@ -14,6 +19,11 @@ const User = {
     },
     async updateById(params) {
         let url = Consts.Api.BASE_URL + Consts.Api.USER_UPDATEBY_ID;
+        let res = await axios.post(url, params);
+        return res.data;
+    },
+    async resetPasswd(params) {
+        let url = Consts.Api.BASE_URL + Consts.Api.USER_RESET_PWD;
         let res = await axios.post(url, params);
         return res.data;
     },

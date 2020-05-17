@@ -9,7 +9,14 @@
         <div class="col-xs-12">
           <!-- 工具按钮 -->
           <div id="toolbar" class="btn-group">
-            <button id="btn_add" type="button" class="btn btn-default">
+            <button
+              id="btn_add"
+              type="button"
+              class="btn btn-default"
+              @click="newUser"
+              data-toggle="modal"
+              data-target="#modal-default"
+            >
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
             </button>
             <button id="btn_edit" type="button" class="btn btn-default">
@@ -43,6 +50,7 @@
                     <th>角色</th>
                     <th>有效</th>
                     <th>上次登录</th>
+                    <th>操作</th>
                   </tr>
                   <tr v-for="(row, index) in rows" :key="index">
                     <td>
@@ -70,6 +78,13 @@
                       >{{ row.state }}</span>
                     </td>
                     <td>{{ row.lastLogin }}</td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn btn-xs btn-danger"
+                        @click="resetPasswd(row.id)"
+                      >重置密码</button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -97,14 +112,69 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <h4 class="modal-title">Default Modal</h4>
+              <h4 class="modal-title">用户信息</h4>
             </div>
             <div class="modal-body">
-              <p>One fine body&hellip; {{ current }} {{ selectList }}</p>
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">登录名</label>
+                  <div class="col-sm-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="current.username"
+                      :disabled="current.usernameDisabled"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">昵称</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="current.nickname" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">描述</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="current.description" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">头像</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="current.avatar" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">角色</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" v-model="current.role">
+                      <option value="1">普通用户</option>
+                      <option value="9">管理员</option>
+                      <option value="2">游客</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">有效</label>
+                  <div class="col-sm-10">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" v-model="current.active" :value="true" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-dismiss="modal"
+                @click="updateUserInfo"
+              >保存</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -123,6 +193,7 @@ import ContentHeader from "@/components/base/ContentHeader.vue";
 import MenuApi from "../../common/menu";
 import UserApi from "../../common/user";
 export default {
+  inject: ["reload"],
   async created() {
     let params = {
       token: this.$store.getters.token
@@ -130,6 +201,7 @@ export default {
     let res = await UserApi.list(params);
     let { code, data } = res;
     if (code == 0) {
+      this.dealListData(data.list);
       this.rows = data.list;
       this.total = data.total;
     } else {
@@ -162,6 +234,56 @@ export default {
       this.selectId = id;
       this.getById(id);
     },
+    dealListData(list) {
+      list.forEach(row => {
+        row.state = row.active == true ? "有效" : "无效";
+      });
+    },
+    newUser() {
+      this.current = {
+        role: 1,
+        usernameDisabled: false,
+        active: true
+      };
+    },
+    async updateUserInfo() {
+      let current = this.current;
+      let params = {
+        token: this.$store.getters.token,
+        nickname: current.nickname,
+        description: current.description,
+        role: current.role,
+        active: current.active
+      };
+      if (current.id) {
+        params.id = current.id;
+        let res = await UserApi.updateById(params);
+        let { code } = res;
+        if (code == 0) {
+          this.$toastr.s("修改成功");
+          this.reload();
+        } else {
+          this.$toastr.e("修改失败");
+        }
+      } else {
+        params.username = current.username;
+        let res = await UserApi.add(params);
+        let { code } = res;
+        if (code == 0) {
+          this.$toastr.s("新增成功");
+        } else {
+          this.$toastr.e("新增失败");
+        }
+      }
+    },
+    async resetPasswd(id) {
+      let params = {
+        token: this.$store.getters.token,
+        id: id
+      };
+      await UserApi.resetPasswd(params);
+      this.$toastr.s("重置成功");
+    },
     async getById(id) {
       let params = {
         token: this.$store.getters.token,
@@ -171,6 +293,7 @@ export default {
       let { code, data } = res;
       if (code == 0) {
         this.current = data.userInfo;
+        this.current.usernameDisabled = true;
         // this.dealPass(data);
       } else {
         this.current = {};
