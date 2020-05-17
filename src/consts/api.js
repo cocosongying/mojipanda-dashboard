@@ -5,6 +5,8 @@ const Api = {
     USER_ADD: '/user/add',
     USER_GETBY_ID: '/user/getById',
     USER_UPDATEBY_ID: '/user/updateById',
+    USER_RESET_PWD: '/user/resetPasswd',
+    USER_MODIFY_PWD: '/user/modifyPasswd',
 }
 
 export default Api
