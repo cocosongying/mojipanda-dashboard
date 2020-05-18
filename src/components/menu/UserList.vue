@@ -8,22 +8,15 @@
       <div class="row">
         <div class="col-xs-12">
           <!-- 工具按钮 -->
-          <div id="toolbar" class="btn-group">
+          <div class="btn-group">
             <button
-              id="btn_add"
               type="button"
               class="btn btn-default"
               @click="newUser"
               data-toggle="modal"
               data-target="#modal-default"
             >
-              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
-            </button>
-            <button id="btn_edit" type="button" class="btn btn-default">
-              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
-            </button>
-            <button id="btn_delete" type="button" class="btn btn-default">
-              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
             </button>
           </div>
           <div class="box">
@@ -35,14 +28,6 @@
               <table class="table table-hover">
                 <tbody>
                   <tr>
-                    <th>
-                      <input
-                        type="checkbox"
-                        v-model="selectAll"
-                        :value="true"
-                        @click="toggleSelectList(selectAll)"
-                      />
-                    </th>
                     <th style="width: 10px">#</th>
                     <th>ID</th>
                     <th>登录名</th>
@@ -53,14 +38,6 @@
                     <th>操作</th>
                   </tr>
                   <tr v-for="(row, index) in rows" :key="index">
-                    <td>
-                      <input
-                        type="checkbox"
-                        v-model="selectList"
-                        :value="row.id"
-                        @change="toggleSelect(row.id)"
-                      />
-                    </td>
                     <td>{{ index + 1 }}.</td>
                     <td>{{ row.id }}</td>
                     <td>
@@ -82,7 +59,7 @@
                       <button
                         type="button"
                         class="btn btn-xs btn-danger"
-                        @click="resetPasswd(row.id)"
+                        @click="resetPasswd(row)"
                       >重置密码</button>
                     </td>
                   </tr>
@@ -192,6 +169,7 @@
 import ContentHeader from "@/components/base/ContentHeader.vue";
 import MenuApi from "../../common/menu";
 import UserApi from "../../common/user";
+import FormatUtil from "../../util/format";
 export default {
   inject: ["reload"],
   async created() {
@@ -214,16 +192,13 @@ export default {
     let total = 0;
     let pageIndex = 0;
     let current = {};
-    let selectList = [];
     return {
       headerInfo,
       rows,
       total,
       pageIndex,
       selectId: 0,
-      current,
-      selectList,
-      selectAll: false
+      current
     };
   },
   components: {
@@ -237,6 +212,10 @@ export default {
     dealListData(list) {
       list.forEach(row => {
         row.state = row.active == true ? "有效" : "无效";
+        row.lastLogin = FormatUtil.getDate(
+          row.lastLogin,
+          "yyyy-MM-dd hh:mm:ss"
+        );
       });
     },
     newUser() {
@@ -271,18 +250,28 @@ export default {
         let { code } = res;
         if (code == 0) {
           this.$toastr.s("新增成功");
+          this.reload();
         } else {
           this.$toastr.e("新增失败");
         }
       }
     },
-    async resetPasswd(id) {
+    async resetPasswd(row) {
       let params = {
         token: this.$store.getters.token,
-        id: id
+        id: row.id
       };
-      await UserApi.resetPasswd(params);
-      this.$toastr.s("重置成功");
+      let res = await this.$swal({
+        title: `确定重置 ${row.username} 的密码？`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "确定重置",
+        cancelButtonText: "取消"
+      });
+      if (res.value) {
+        await UserApi.resetPasswd(params);
+        this.$toastr.s("重置成功");
+      }
     },
     async getById(id) {
       let params = {
@@ -298,20 +287,6 @@ export default {
       } else {
         this.current = {};
         // this.dealError(data);
-      }
-    },
-    toggleSelect() {
-      this.selectAll = this.selectList.length == this.rows.length;
-    },
-    toggleSelectList(data) {
-      this.selectAll = !data;
-      if (this.selectAll) {
-        let list = this.rows.map(value => {
-          return value.id;
-        });
-        this.selectList = list;
-      } else {
-        this.selectList = [];
       }
     },
     jumpPage(page) {

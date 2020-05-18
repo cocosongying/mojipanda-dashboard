@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueToastr from "vue-toastr";
+import VueSweetalert2 from 'vue-sweetalert2';
 import App from './App.vue'
 import router from './router';
 import store from './store';
@@ -14,6 +15,7 @@ import 'admin-lte/dist/css/skins/_all-skins.min.css'
 import 'admin-lte/dist/css/AdminLTE.min.css'
 import 'admin-lte/bower_components/bootstrap/dist/js/bootstrap.min.js'
 import 'admin-lte/dist/js/adminlte.min.js'
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 import routemap from './router/components'
 const genRoutes = function (menus, routes) {
@@ -50,6 +52,7 @@ let fromApi = true;
 
 Vue.use(VueAxios, axios)
 Vue.use(VueToastr)
+Vue.use(VueSweetalert2);
 Vue.prototype.Global = consts
 Vue.config.productionTip = false
 
