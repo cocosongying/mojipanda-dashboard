@@ -50,6 +50,7 @@ const genRoutes = function (menus, routes) {
 
 let fromApi = true;
 
+axios.defaults.baseURL = consts.Api.BASE_URL;
 Vue.use(VueAxios, axios)
 Vue.use(VueToastr)
 Vue.use(VueSweetalert2);
