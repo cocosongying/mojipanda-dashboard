@@ -12,7 +12,7 @@ export default new Router({
       meta: {
         normal: true
       },
-      component: resolve => require(['@/components/Login'], resolve)
+      component: () => import('@/components/Login.vue')
     }
   ]
 })
