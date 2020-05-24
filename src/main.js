@@ -85,7 +85,6 @@ router.beforeEach((to, from, next) => {
         //
       }
     }
-    console.log(menus);
     const routes = genRoutes(menus);
     const notfound = {
       path: "*",
