@@ -9,6 +9,10 @@ const CryptoUtil = {
     aesEncrypt(data, key) {
         let res = CryptoJs.AES.encrypt(data, key || AES_KEY);
         return res.toString();
+    },
+    sha1Digest(data) {
+        let res = CryptoJs.SHA1(data);
+        return res.toString();
     }
 }
 

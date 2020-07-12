@@ -4,7 +4,7 @@ import CryptoUtil from '../util/crypto'
 
 const Login = {
     async doLogin(username, password) {
-        password = CryptoUtil.aesEncrypt(password);
+        password = CryptoUtil.sha1Digest(password);
         let params = {
             username: username,
             password: password

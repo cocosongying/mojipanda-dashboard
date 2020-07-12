@@ -201,9 +201,9 @@ export default {
       }
       let params = {
         token: this.$store.getters.token,
-        oldpassword: CryptoUtil.aesEncrypt(this.oldpassword),
-        newpassword: CryptoUtil.aesEncrypt(this.newpassword),
-        newpassword2: CryptoUtil.aesEncrypt(this.newpassword2)
+        oldpassword: CryptoUtil.sha1Digest(this.oldpassword),
+        newpassword: CryptoUtil.sha1Digest(this.newpassword),
+        newpassword2: CryptoUtil.sha1Digest(this.newpassword2)
       };
       let res = await UserApi.modifyPasswd(params);
       let { code } = res;
